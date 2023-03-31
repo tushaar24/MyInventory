@@ -60,6 +60,7 @@ class ProductListFragment : Fragment() {
                         binding.grpNoProductFoundOnSearch.visibility = View.GONE
                     } else {
                         binding.rvProductList.visibility = View.GONE
+                        binding.rvProductSearchList.visibility = View.GONE
                         setUpProductListPagingAdapter()
                         binding.grpNoProductFoundOnSearch.visibility = View.VISIBLE
                     }

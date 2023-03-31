@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.myinventory.MainActivity
 import com.example.myinventory.R
 import com.example.myinventory.databinding.FragmentAddProductBinding
+import com.example.myinventory.utils.observeOnce
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,6 +32,7 @@ class AddProductFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var selectedImageUri: Uri
     private lateinit var mViewModel: AddProductViewModel
+    private var myDialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,9 +59,7 @@ class AddProductFragment : Fragment() {
         setUpProductTypesList()
 
         binding.ivBackBtn.setOnClickListener {
-            val action =
-                AddProductFragmentDirections.actionAddProductFragmentToProductListFragment()
-            findNavController().navigate(action)
+            findNavController().navigateUp()
         }
 
         binding.btnSelectImage.setOnClickListener {
@@ -118,13 +118,17 @@ class AddProductFragment : Fragment() {
             positiveBtnAction()
 
         }
-        builder.setNegativeButton(negativeBtnMessage) { dialog, which ->
-            dialog.dismiss()
-            negativeBtnAction()
+
+        if (message != requireContext().getString(R.string.dialog_box_product_added_success_message)) {
+            builder.setNegativeButton(negativeBtnMessage) { dialog, which ->
+                dialog.dismiss()
+                negativeBtnAction()
+            }
         }
+
         builder.setCancelable(false)
-        val dialog = builder.create()
-        dialog.show()
+        myDialog = builder.create()
+        myDialog?.show()
     }
 
     private fun setUpProductTypesList() {
@@ -223,7 +227,7 @@ class AddProductFragment : Fragment() {
             )
         }
 
-        mViewModel.isSuccessful.observe(requireActivity()) { isSuccessful ->
+        mViewModel.isSuccessful.observeOnce(requireActivity()) { isSuccessful ->
 
             binding.progressBar.visibility = View.GONE
 
@@ -240,19 +244,12 @@ class AddProductFragment : Fragment() {
                     }
                 }
 
-                val negativeBtnAction: () -> Unit = {
-                    val action =
-                        AddProductFragmentDirections.actionAddProductFragmentToProductListFragment()
-                    findNavController().navigate(action)
-                }
-
                 showUserFeedbackDialogBox(
                     requireContext().getString(R.string.dialog_box_product_added_success_message),
                     requireContext().getString(R.string.dialog_box_product_added_success_title),
-                    requireContext().getString(R.string.dialog_box_yes),
+                    requireContext().getString(R.string.dialog_box_okay),
                     requireContext().getString(R.string.dialog_box_no),
-                    positiveBtnAction,
-                    negativeBtnAction
+                    positiveBtnAction
                 )
             } else {
                 showUserFeedbackDialogBox(

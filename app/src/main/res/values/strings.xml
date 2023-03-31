@@ -16,7 +16,7 @@
     <string name="enter_tax_amount">Enter Tax Amount</string>
     <string name="select_product_type">Select Product Type</string>
     <string name="dialog_box_cancel">Cancel</string>
-    <string name="dialog_box_product_added_success_message">Your product is added successfully.\nDo you want to add more products?</string>
+    <string name="dialog_box_product_added_success_message">Your product is added successfully.</string>
     <string name="dialog_box_product_added_success_title">Successfully Added</string>
     <string name="dialog_box_okay">Okay</string>
     <string name="dialog_box_no">No</string>
