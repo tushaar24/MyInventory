@@ -31,4 +31,8 @@ interface LocalDataSource {
         productEntity: ProductEntity,
         searchQuery: String?
     ): List<ProductEntity>
+
+    suspend fun getSearchedProducts(
+        searchQuery: String
+    ): List<ProductEntity>
 }

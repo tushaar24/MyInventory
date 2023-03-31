@@ -23,4 +23,9 @@ interface ProductInventoryDao {
         searchQuery: String?,
         tax: Double?
     ): List<ProductEntity>
+
+    @Query("SELECT * FROM $PRODUCT_INVENTORY_TABLE WHERE productName LIKE '%' || :searchQuery || '%'")
+    fun getSearchedProducts(
+        searchQuery: String
+    ): List<ProductEntity>
 }

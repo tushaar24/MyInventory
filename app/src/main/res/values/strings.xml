@@ -1,3 +1,35 @@
 <resources>
     <string name="app_name">MyInventory</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="product_list_screen_product_price">Price: %s</string>
+    <string name="product_list_screen_product_type">Type: %s</string>
+    <string name="product_list_screen_product_tax">Tax: %s</string>
+    <string name="search_products_hint">Search for \"products\"</string>
+    <string name="product_list_screen_your_product_title">Your Products:</string>
+    <string name="product_details_no_product_found_on_search">No Product\n Found</string>
+    <string name="add_product_title">Add Product</string>
+    <string name="product_name_hint">Enter Product Name</string>
+    <string name="hello">Hello</string>
+    <string name="price_hint">Enter Price</string>
+    <string name="enter_tax_amount">Enter Tax Amount</string>
+    <string name="select_product_type">Select Product Type</string>
+    <string name="dialog_box_cancel">Cancel</string>
+    <string name="dialog_box_product_added_success_message">Your product is added successfully.\nDo you want to add more products?</string>
+    <string name="dialog_box_product_added_success_title">Successfully Added</string>
+    <string name="dialog_box_okay">Okay</string>
+    <string name="dialog_box_no">No</string>
+    <string name="dialog_box_yes">Yes</string>
+    <string name="show_no_internet_dialog_message">Sorry can\'t add products without internet.\n Please connect with internet and try again.</string>
+    <string name="show_no_internet_dialog_title">No Internet Connection</string>
+    <string name="dialog_box_error_message">Something went wrong. Please try again.</string>
+    <string name="dialog_box_error__title">Problem</string>
+    <string-array name="product_type">
+        <item>Fruit</item>
+        <item>Service</item>
+        <item>Product</item>
+        <item>Car</item>
+        <item>Grocery</item>
+    </string-array>
 </resources>

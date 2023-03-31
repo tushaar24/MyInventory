@@ -14,7 +14,19 @@ import javax.inject.Inject
 class ProductInventoryRemoteMediator @Inject constructor(
     private val repository: Repository
 ) : RemoteMediator<Int, ProductEntity>() {
-    // TODO: Complete this class
+
+    override suspend fun initialize(): InitializeAction {
+        val remoteKeys = repository?.getProductInventoryRemoteKeys(1)?.lastTimeUpdated ?: 0
+        val cacheTimeout = 1440
+
+        val cacheExpired = (System.currentTimeMillis() - remoteKeys) > (cacheTimeout * 60 * 1000)
+
+        return if (cacheExpired) {
+            InitializeAction.LAUNCH_INITIAL_REFRESH
+        } else {
+            InitializeAction.SKIP_INITIAL_REFRESH
+        }
+    }
 
     override suspend fun load(
         loadType: LoadType,
@@ -38,6 +50,7 @@ class ProductInventoryRemoteMediator @Inject constructor(
                     nextPage
                 }
             }
+
             when (val response = repository.fetchAllProducts()) {
                 is NetworkResult.Success -> {
                     val endOfPaginationReached = response.data.size < state.config.pageSize

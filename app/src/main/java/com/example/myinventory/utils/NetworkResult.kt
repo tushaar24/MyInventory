@@ -1,5 +1,8 @@
 package com.example.myinventory.utils
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -72,5 +75,19 @@ fun <T : Any> handleApi(
         NetworkResult.Failure(e.code(), e.message())
     } catch (e: Exception) {
         NetworkResult.Exception(e)
+    }
+}
+
+fun hasInternetConnection(mContext: Context): Boolean {
+    val connectivityManager = mContext.getSystemService(
+        Context.CONNECTIVITY_SERVICE
+    ) as ConnectivityManager
+    val activeNetwork = connectivityManager.activeNetwork ?: return false
+    val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
+    return when {
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+        else -> false
     }
 }

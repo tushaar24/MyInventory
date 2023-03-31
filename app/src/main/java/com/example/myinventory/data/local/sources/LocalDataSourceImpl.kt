@@ -82,4 +82,8 @@ class LocalDataSourceImpl @Inject constructor(
             productEntity.tax
         )
     }
+
+    override suspend fun getSearchedProducts(searchQuery: String): List<ProductEntity> {
+        return productInventoryDao.getSearchedProducts(searchQuery)
+    }
 }
