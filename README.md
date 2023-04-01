@@ -10,7 +10,7 @@ Clone the repository on your machine. Open the project on your IDE and run it.
 
 ## About: 
 
-It is a small offlien first app which shows product lists and lets the user add more products. 
+It is a small offline first app which shows product lists and lets the user add more products. 
 
 ## Built With:
 
