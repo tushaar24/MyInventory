@@ -28,4 +28,7 @@ interface ProductInventoryDao {
     fun getSearchedProducts(
         searchQuery: String
     ): List<ProductEntity>
+
+    @Query("SELECT * FROM $PRODUCT_INVENTORY_TABLE")
+    fun getProductInventory(): List<ProductEntity>
 }

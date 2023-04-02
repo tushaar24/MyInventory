@@ -16,4 +16,16 @@ data class ProductEntity(
     @SerializedName("product_type")
     val productType: String,
     val tax: Double
-)
+){
+    override fun equals(other: Any?): Boolean {
+        return (this.productName == (other as ProductEntity).productName
+                &&
+                this.image == (other as ProductEntity).image
+                &&
+                this.price == (other as ProductEntity).price
+                &&
+                this.tax == other.tax
+                &&
+                this.productType == other.productType)
+    }
+}

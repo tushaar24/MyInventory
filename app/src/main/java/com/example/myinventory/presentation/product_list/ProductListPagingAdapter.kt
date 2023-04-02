@@ -72,8 +72,6 @@ class ProductListPagingAdapter(
         val currentProduct = getItem(position)
         if (currentProduct != null) {
             holder.bind(currentProduct, mContext)
-        } else {
-            Log.d("oxoxtushar", "null product")
         }
     }
 

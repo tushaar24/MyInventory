@@ -75,7 +75,7 @@ class RepositoryImpl @Inject constructor(
     @OptIn(ExperimentalPagingApi::class)
     override fun getAllCachedProducts() = Pager(
         config = PagingConfig(
-            pageSize = 1
+            pageSize = 3
         ),
         remoteMediator = ProductInventoryRemoteMediator(this),
         pagingSourceFactory = { getAllProducts() }
@@ -99,5 +99,9 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun getSearchedProducts(searchQuery: String): List<ProductEntity> {
         return localDataSource.getSearchedProducts(searchQuery)
+    }
+
+    override suspend fun getProductInventory(): List<ProductEntity> {
+        return localDataSource.getProductInventory()
     }
 }

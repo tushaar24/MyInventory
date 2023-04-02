@@ -10,6 +10,6 @@ import kotlinx.coroutines.SupervisorJob
 class MyInventoryApplication : Application() {
     companion object {
         @JvmStatic
-        val AppScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val AppScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     }
 }

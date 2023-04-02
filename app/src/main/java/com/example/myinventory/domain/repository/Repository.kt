@@ -53,4 +53,7 @@ interface Repository {
         @Part imageFile: MultipartBody.Part?
     ): NetworkResult<ResponseBody>
 
+
+    suspend fun getProductInventory(): List<ProductEntity>
+
 }

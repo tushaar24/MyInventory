@@ -1,13 +1,16 @@
 package com.example.myinventory.data.remote.paging_sources
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
+import com.example.myinventory.MyInventoryApplication
 import com.example.myinventory.data.common.entity.ProductEntity
 import com.example.myinventory.data.local.entity.ProductInventoryRemoteKeysEntity
 import com.example.myinventory.domain.repository.Repository
 import com.example.myinventory.utils.NetworkResult
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -16,15 +19,29 @@ class ProductInventoryRemoteMediator @Inject constructor(
 ) : RemoteMediator<Int, ProductEntity>() {
 
     override suspend fun initialize(): InitializeAction {
-        val remoteKeys = repository?.getProductInventoryRemoteKeys(1)?.lastTimeUpdated ?: 0
-        val cacheTimeout = 1440
 
-        val cacheExpired = (System.currentTimeMillis() - remoteKeys) > (cacheTimeout * 60 * 1000)
+        return withContext(MyInventoryApplication.AppScope.coroutineContext) {
+            when (val response = repository.fetchAllProducts()) {
+                is NetworkResult.Success -> {
+                    val localData = repository.getProductInventory()
+                    val initializeAction = if (localData == response.data) {
+                        InitializeAction.SKIP_INITIAL_REFRESH
+                    } else {
+                        InitializeAction.LAUNCH_INITIAL_REFRESH
+                    }
+                    initializeAction
+                }
 
-        return if (cacheExpired) {
-            InitializeAction.LAUNCH_INITIAL_REFRESH
-        } else {
-            InitializeAction.SKIP_INITIAL_REFRESH
+                else -> {
+                    val remoteKeys =
+                        repository?.getProductInventoryRemoteKeys(0)?.lastTimeUpdated ?: 0
+                    if (remoteKeys.toInt() != 0) {
+                        InitializeAction.SKIP_INITIAL_REFRESH
+                    } else {
+                        InitializeAction.LAUNCH_INITIAL_REFRESH
+                    }
+                }
+            }
         }
     }
 
@@ -53,7 +70,8 @@ class ProductInventoryRemoteMediator @Inject constructor(
 
             when (val response = repository.fetchAllProducts()) {
                 is NetworkResult.Success -> {
-                    val endOfPaginationReached = response.data.size < state.config.pageSize
+                    Log.d("oxoxtushar", "network call: ${response.data.size}")
+                    val endOfPaginationReached = true
                     val prevPage = if (currentPage == 1) null else currentPage.minus(1)
                     val nextPage = if (endOfPaginationReached) null else currentPage.plus(1)
 
