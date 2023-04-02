@@ -20,7 +20,7 @@ It is a small offline first app which shows product lists and lets the user add 
 - Paging 3 Library 
 - Room Db
 - Flows
-- Navigation Component Librar
+- Navigation Component Library
 - Retrofit
 
 The architecture used to build this app is MVVM with clean architecture.
